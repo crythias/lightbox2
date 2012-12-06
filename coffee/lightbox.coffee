@@ -35,7 +35,7 @@ Lightbox
 - keyboardAction
 - end
 
-options = new LightboxOptions
+options = new LightboxOptions()
 lightbox = new Lightbox options
 
 ###
@@ -111,7 +111,7 @@ class Lightbox
     # Attach event handlers to the newly minted DOM elements
     $('#lightboxOverlay')
       .hide()
-      .on 'click', (e) =>
+      .on 'click', () =>
         @end()
         return false
 
@@ -127,15 +127,15 @@ class Lightbox
       if $(e.target).attr('id') == 'lightbox' then @end()
       return false
 
-    $lightbox.find('.lb-prev').on 'click', (e) =>
+    $lightbox.find('.lb-prev').on 'click', () =>
       @changeImage @currentImageIndex - 1
       return false
 
-    $lightbox.find('.lb-next').on 'click', (e) =>
+    $lightbox.find('.lb-next').on 'click', () =>
       @changeImage @currentImageIndex + 1
       return false
 
-    $lightbox.find('.lb-loader, .lb-close').on 'click', (e) =>
+    $lightbox.find('.lb-loader, .lb-close').on 'click', () =>
       @end()
       return false
 
@@ -195,7 +195,7 @@ class Lightbox
     $lightbox.find('.lb-outerContainer').addClass 'animating'
 
     # When image to show is preloaded, we send the width and height to sizeContainer()
-    preloader = new Image
+    preloader = new Image()
     preloader.onload = () =>
       $image.attr 'src', @album[imageNumber].link
       # Bug fix by Andy Scott
@@ -309,11 +309,11 @@ class Lightbox
   # Preload previos and next images in set.
   preloadNeighboringImages: ->
    if @album.length > @currentImageIndex + 1
-      preloadNext = new Image
+      preloadNext = new Image()
       preloadNext.src = @album[@currentImageIndex + 1].link
 
     if @currentImageIndex > 0
-      preloadPrev = new Image
+      preloadPrev = new Image()
       preloadPrev.src = @album[@currentImageIndex - 1].link
     return
 
@@ -357,5 +357,5 @@ class Lightbox
 
 
 $ ->
-  options = new LightboxOptions
+  options = new LightboxOptions()
   lightbox = new Lightbox options
