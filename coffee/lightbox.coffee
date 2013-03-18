@@ -193,6 +193,33 @@ class Lightbox
     preloader = new Image
     preloader.onload = () =>
       $image.attr 'src', @album[imageNumber].link
+      # Determine window inner width/height
+      # See: http://lokeshdhakar.com/forums/index.php?p=/discussion/5886/resizing-bigger-images-to-screen-size#Comment_17858
+      # See: http://www.javascripter.net/faq/browserw.htm
+      winW = 630
+      winH = 460
+      if document.body && document.body.offsetWidth
+        winW = document.body.offsetWidth
+        winH = document.body.offsetHeight
+
+      if document.compatMode=='CSS1Compat' && document.documentElement && document.documentElement.offsetWidth
+        winW = document.documentElement.offsetWidth
+        winH = document.documentElement.offsetHeight
+
+      if window.innerWidth && window.innerHeight
+        winW = window.innerWidth
+        winH = window.innerHeight
+
+      if preloader.width > winW * 0.9
+        preloader.height = (winW * 0.9 * preloader.height) / preloader.width
+        preloader.width = winW * 0.9
+
+      if preloader.height > winH * 0.8
+        preloader.width = (winH * 0.8 * preloader.width) / preloader.height
+        preloader.height = winH * 0.8
+
+      # the original version uses width attribute, but found CSS height is better
+      $image.css 'height', preloader.height+'px'
       # Bug fix by Andy Scott
       $image.width = preloader.width
       $image.height = preloader.height
