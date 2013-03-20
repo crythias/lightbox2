@@ -48,8 +48,6 @@ lightbox = new Lightbox options
 
   LightboxOptions = (function() {
     function LightboxOptions() {
-      this.fileLoadingImage = 'images/loading.gif';
-      this.fileCloseImage = 'images/close.png';
       this.resizeDuration = 700;
       this.fadeDuration = 500;
       this.labelImage = "Image";
@@ -86,7 +84,7 @@ lightbox = new Lightbox options
       var $lightbox,
         _this = this;
 
-      $('<div id="lightboxOverlay"></div>' + '<div id="lightbox">' + '<div class="lb-outerContainer">' + '<div class="lb-container">' + '<img class="lb-image" src="" >' + '<div class="lb-nav">' + '<a class="lb-prev" href="" ></a>' + '<a class="lb-next" href="" ></a>' + '</div>' + '<div class="lb-loader">' + '<a class="lb-cancel"><img src="' + this.options.fileLoadingImage + '"></a>' + '</div>' + '</div>' + '</div>' + '<div class="lb-dataContainer">' + '<div class="lb-data">' + '<div class="lb-details">' + '<span class="lb-caption"></span>' + '<span class="lb-number"></span>' + '</div>' + '<div class="lb-closeContainer">' + '<a class="lb-close"><img src="' + this.options.fileCloseImage + '"></a>' + '</div>' + '</div>' + '</div>' + '</div>').appendTo("body");
+      $('<div id="lightboxOverlay"></div>' + '<div id="lightbox">' + '<div class="lb-outerContainer">' + '<div class="lb-container">' + '<img class="lb-image" src="" >' + '<div class="lb-nav">' + '<a class="lb-prev" href="" ></a>' + '<a class="lb-next" href="" ></a>' + '</div>' + '<div class="lb-loader">' + '<a class="lb-cancel"></a>' + '</div>' + '</div>' + '</div>' + '<div class="lb-dataContainer">' + '<div class="lb-data">' + '<div class="lb-details">' + '<span class="lb-caption"></span>' + '<span class="lb-number"></span>' + '</div>' + '<div class="lb-closeContainer">' + '<a class="lb-close"></a>' + '</div>' + '</div>' + '</div>' + '</div>').appendTo("body");
       $('#lightboxOverlay').hide().on('click', function(e) {
         _this.end();
         return false;
