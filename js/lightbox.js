@@ -199,19 +199,18 @@ lightbox = new Lightbox options
       $lightbox.find('.lb-outerContainer').addClass('animating');
       preloader = new Image;
       preloader.onload = function() {
+
+        var maxwidth = 800;
+        if(preloader.width > maxwidth) {
+          var scale = preloader.width / maxwidth
+          preloader.width = maxwidth;
+          preloader.height = preloader.height /scale;
+          $image.css("maxWidth", maxwidth + "px");
+        }
+
         $image.attr('src', _this.album[imageNumber].link);
         $image.width = preloader.width;
         $image.height = preloader.height;
-
-	if(preloader.width > 800) {
-	  var scale = preloader.width / 800
-	  preloader.width = 800;
-	  preloader.height = preloader.height /scale;
-		  
-	  $image.width = preloader.width;
-	  $image.height = preloader.height;
-	  $image.css("maxWidth","800px");
-	}
 
         return _this.sizeContainer(preloader.width, preloader.height);
       };
