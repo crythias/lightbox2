@@ -45,8 +45,6 @@ $ = jQuery
 
 class LightboxOptions
   constructor: ->
-    @fileLoadingImage = 'img/loading.gif'
-    @fileCloseImage = 'img/close.png'
     @resizeDuration = 700
     @fadeDuration = 500
     @labelImage = "Image" # Change to localize to non-english language
@@ -76,37 +74,32 @@ class Lightbox
   # Build html for the lightbox and the overlay.
   # Attach event handlers to the new DOM elements. click click click
   build: ->
-    $("<div>", id: 'lightboxOverlay' ).after(
-      $('<div/>', id: 'lightbox').append(
-        $('<div/>', class: 'lb-outerContainer').append(
-          $('<div/>', class: 'lb-container').append(
-            $('<img/>', class: 'lb-image'),
-            $('<div/>',class: 'lb-nav').append(
-              $('<a/>', class: 'lb-prev'),
-              $('<a/>', class: 'lb-next')
-            ),
-            $('<div/>', class: 'lb-loader').append(
-              $('<a/>', class: 'lb-cancel').append(
-                $('<img/>', src: @options.fileLoadingImage)
-              )
-            )
-          )
-        ),
-        $('<div/>', class: 'lb-dataContainer').append(
-          $('<div/>', class: 'lb-data').append(
-            $('<div/>', class: 'lb-details').append(
-              $('<span/>', class: 'lb-caption'),
-              $('<span/>', class: 'lb-number')
-            ),
-            $('<div/>', class: 'lb-closeContainer').append(
-              $('<a/>', class: 'lb-close').append(
-                $('<img/>', src: @options.fileCloseImage)
-              )
-            )
-          )
-        )
-      )
-    ).appendTo $('body')
+    $('<div id="lightboxOverlay"></div>' +
+    '<div id="lightbox">' +
+        '<div class="lb-outerContainer">' +
+            '<div class="lb-container">' +
+                '<img class="lb-image" src="" >' +
+                '<div class="lb-nav">' +
+                    '<a class="lb-prev" href="" ></a>' +
+                    '<a class="lb-next" href="" ></a>' +
+                '</div>' +
+                '<div class="lb-loader">' +
+                    '<a class="lb-cancel"></a>' +
+                '</div>' +
+            '</div>' +
+        '</div>' +
+        '<div class="lb-dataContainer">' +
+            '<div class="lb-data">' +
+                '<div class="lb-details">' +
+                    '<span class="lb-caption"></span>' +
+                    '<span class="lb-number"></span>' +
+                '</div>' +
+                '<div class="lb-closeContainer">' +
+                    '<a class="lb-close"></a>' +
+                '</div>' +
+            '</div>' +
+        '</div>' +
+    '</div>').appendTo "body";
 
     # Attach event handlers to the newly minted DOM elements
     $('#lightboxOverlay')
@@ -127,11 +120,11 @@ class Lightbox
       if $(e.target).attr('id') == 'lightbox' then @end()
       return false
 
-    $lightbox.find('.lb-prev').on 'click', () =>
+    $lightbox.find('.lb-prev').on 'click', (e) =>
       @changeImage @currentImageIndex - 1
       return false
 
-    $lightbox.find('.lb-next').on 'click', () =>
+    $lightbox.find('.lb-next').on 'click', (e) =>
       @changeImage @currentImageIndex + 1
       return false
 
@@ -198,6 +191,33 @@ class Lightbox
     preloader = new Image()
     preloader.onload = () =>
       $image.attr 'src', @album[imageNumber].link
+      # Determine window inner width/height
+      # See: http://lokeshdhakar.com/forums/index.php?p=/discussion/5886/resizing-bigger-images-to-screen-size#Comment_17858
+      # See: http://www.javascripter.net/faq/browserw.htm
+      winW = 630
+      winH = 460
+      if document.body && document.body.offsetWidth
+        winW = document.body.offsetWidth
+        winH = document.body.offsetHeight
+
+      if document.compatMode=='CSS1Compat' && document.documentElement && document.documentElement.offsetWidth
+        winW = document.documentElement.offsetWidth
+        winH = document.documentElement.offsetHeight
+
+      if window.innerWidth && window.innerHeight
+        winW = window.innerWidth
+        winH = window.innerHeight
+
+      if preloader.width > winW * 0.9
+        preloader.height = (winW * 0.9 * preloader.height) / preloader.width
+        preloader.width = winW * 0.9
+
+      if preloader.height > winH * 0.8
+        preloader.width = (winH * 0.8 * preloader.width) / preloader.height
+        preloader.height = winH * 0.8
+
+      # the original version uses width attribute, but found CSS height is better
+      $image.css 'height', preloader.height+'px'
       # Bug fix by Andy Scott
       $image.width = preloader.width
       $image.height = preloader.height
@@ -313,7 +333,7 @@ class Lightbox
       preloadNext.src = @album[@currentImageIndex + 1].link
 
     if @currentImageIndex > 0
-      preloadPrev = new Image()
+      preloadPrev = new Image
       preloadPrev.src = @album[@currentImageIndex - 1].link
     return
 

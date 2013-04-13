@@ -48,6 +48,12 @@
   text-align: center
   line-height: 0
 
+  .lb-cancel
+    background-image: url("../images/loading.gif")
+    display: inline-block
+    height: 32px
+    width: 32px
+
 .lb-nav
   position: absolute
   top: 0
@@ -79,11 +85,11 @@
 
 .lb-prev
   &:hover
-    background: url(../img/prev.png) left 48% no-repeat
+   background: url("../images/prev.png") left 48% no-repeat
 
 .lb-next
   &:hover
-    background: url(../img/next.png) right 48% no-repeat
+    background: url("../images/next.png") right 48% no-repeat
 
 .lb-dataContainer
   margin: 0 auto
@@ -110,7 +116,10 @@
     padding-bottom: 1.0em
     font-size: 11px
   .lb-close
+    background-image: url("../images/close.png")
+    background-repeat: no-repeat
     width: 35px
+    height: 27px
     float: right
     padding-bottom: 0.7em
     outline: none
